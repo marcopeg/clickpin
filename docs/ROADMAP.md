@@ -1,21 +1,20 @@
 # API
+
 https://api.clickpin.io
 
 Pure GraphQL API exposed via Hasura gateway, it puts together an Hasura instance with
 a custom server that is capable of handling webhooks, authenticated and public requests.
 
 - Basic setup:
-  - _ Hasura up and running on GitPod
   - Hasura up and running on Heroku
-  - _ Fastify based service running on GitPod
   - Automatic deploy towards Heroku on merge on master
   - Understands Auth0 authentication token
   - Validate Hasura's webhooks token
   - Talk back to Hasura via Apollo Client (no cache)
   - Fetchq workers in place
   - Schema Migrations
-    - _ Run migrations via CLI commands in GitPod
-    - _ Run migrations at boot time based on ENV var 
+    - \_ Run migrations via CLI commands in GitPod
+    - \_ Run migrations at boot time based on ENV var
       (root node, if there are parallel instances only one should run migrations)
 - Features
   - On signup, push the user to users maintenance queue
@@ -24,6 +23,7 @@ a custom server that is capable of handling webhooks, authenticated and public r
   - On pin slug change, push task to create redirect 301 to the uuid page
 
 # Editor APP
+
 https://app.clickpin.io
 
 Pure client side app, this should be accessed on login alone and gives
@@ -31,7 +31,7 @@ the possibility to modify the contents of the account.
 
 - Basic setup:
   - Client
-    - Login / Logout
+    - \_ Login / Logout
     - Query towards Hasura
     - Automatic deploy towards Netflify on merge on master
 - List existing pins
@@ -45,9 +45,8 @@ the possibility to modify the contents of the account.
   - change image url
 - Delete Pin
 
-
-
 # Public Content Website
+
 https://clickpin.io
 
 Server side rendered content based on public data.  
@@ -56,7 +55,7 @@ if it was possible to share the same session id and trace public
 views from an authenticated user.
 
 - Basic setup:
-  - _ Basic hello world with NextJS or similar tools
+  - \_Basic hello world with NextJS or similar tools
   - Fetch data from API via Apollo Client
   - Push data to API via Apollo Client
 - Coming soon page
@@ -77,4 +76,3 @@ views from an authenticated user.
     - /@username/pin/{slug}
       (with canonical id to the pin's uuid route)
 - Display board page
-
