@@ -1,1 +1,1 @@
-# clickpin
+# ClickPIN
