@@ -25,3 +25,4 @@ RUN mkdir -p ~/.hasura/bin \
 # Ensure the basic environment variables that are needed by Hasura to start
 ENV HASURA_GRAPHQL_DATABASE_URL="postgres://localhost:5432/postgres"
 ENV HASURA_GRAPHQL_ENABLE_CONSOLE="true"
+ENV HASURA_GRAPHQL_ADMIN_SECRET="hasura"
