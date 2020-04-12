@@ -22,6 +22,12 @@ tasks:
     command: yarn start:gitpod
     openIn: bottom
     openMode: tab-after
+  - name: App
+    before: cd app
+    init: yarn install && touch .gitpod.lock
+    command: yarn start:gitpod
+    openIn: bottom
+    openMode: tab-after
 
 ports:
   - port: 5432
