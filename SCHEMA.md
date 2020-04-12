@@ -1,3 +1,4 @@
+// https://dbdiagram.io/d/5e9014c539d18f5553fd647c
 
 Table accounts {
   id bigint [pk, increment] // auto-increment

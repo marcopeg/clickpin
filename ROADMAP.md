@@ -5,17 +5,17 @@ Pure GraphQL API exposed via Hasura gateway, it puts together an Hasura instance
 a custom server that is capable of handling webhooks, authenticated and public requests.
 
 - Basic setup:
-  - Hasura up and running on GitPod
+  - _ Hasura up and running on GitPod
   - Hasura up and running on Heroku
-  - Fastify based service running on GitPod
+  - _ Fastify based service running on GitPod
   - Automatic deploy towards Heroku on merge on master
   - Understands Auth0 authentication token
   - Validate Hasura's webhooks token
   - Talk back to Hasura via Apollo Client (no cache)
   - Fetchq workers in place
   - Schema Migrations
-    - Run migrations via CLI commands in GitPod
-    - Run migrations at boot time based on ENV var 
+    - _ Run migrations via CLI commands in GitPod
+    - _ Run migrations at boot time based on ENV var 
       (root node, if there are parallel instances only one should run migrations)
 - Features
   - On signup, push the user to users maintenance queue
@@ -56,7 +56,7 @@ if it was possible to share the same session id and trace public
 views from an authenticated user.
 
 - Basic setup:
-  - Basic hello world with NextJS or similar tools
+  - _ Basic hello world with NextJS or similar tools
   - Fetch data from API via Apollo Client
   - Push data to API via Apollo Client
 - Coming soon page
