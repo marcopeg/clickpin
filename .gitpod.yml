@@ -30,13 +30,13 @@ tasks:
     command: hasura_start
   - name: Api
     before: cd api
-    init: yarn install && touch .gitpod.lock
+    init: npm install && touch .gitpod.lock
     command: yarn start:gitpod
     openIn: bottom
     openMode: tab-after
   - name: App
     before: cd app
-    init: yarn install && touch .gitpod.lock
+    init: npm install && touch .gitpod.lock
     command: yarn start:gitpod:app
     openIn: bottom
     openMode: tab-after
