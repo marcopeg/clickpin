@@ -9,13 +9,16 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:gitpod": "react-scripts start",
+    "start:gitpod:app": "react-scripts start",
+    "start:gitpod:styleguide": "HOST=$(gp url 6060) styleguidist server",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "tdd": "react-scripts test --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -32,5 +35,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-styleguidist": "^11.0.5"
   }
 }

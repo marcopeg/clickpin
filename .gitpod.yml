@@ -14,6 +14,18 @@ tasks:
     command: yarn tdd:e2e
     openIn: right
     openMode: tab-after
+  - name: Styleguide
+    before: cd app
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    command: yarn start:gitpod:styleguide
+    openIn: right
+    openMode: tab-after
+  - name: App Tests
+    before: cd app
+    init: echo "Awaiting NPM install..." && while ! find ./.gitpod.lock 2> /dev/null 1> /dev/null; do sleep 5; done
+    command: yarn tdd
+    openIn: right
+    openMode: tab-after
   - name: Hasura
     command: hasura_start
   - name: Api
