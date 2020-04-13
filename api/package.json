@@ -1,14 +1,13 @@
 {
   "name": "clickpin-api",
-  "organization": "mysocial",
   "version": "0.0.1",
-  "description": "Provides the referral functionality",
+  "description": "Provides the apis",
   "main": "ssr/index.js",
   "scripts": {
     "___// Development Utilities //___": "",
     "start": "node src/index.js",
     "start:dev": "nodemon --watch src src/index.js",
-    "start:gitpod": "NODE_ENV=development NODE_ROLE=master nodemon --watch src src/index.js",
+    "start:gitpod": "NODE_ENV=development RUN_MIGRATIONS=true nodemon --watch src src/index.js",
     "start:docker": "yarn && nodemon src/index.js",
     "___// Testing Utilities //___": "",
     "test": "npm run test:unit",

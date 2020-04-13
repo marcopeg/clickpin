@@ -17,9 +17,6 @@ const settings = ({ setConfig, getConfig }) => {
     NODE_ENV: envalid.str({
       choices: ['production', 'development', 'test'],
     }),
-    NODE_ROLE: envalid.str({
-      choices: ['master', 'worker'],
-    }),
     LOG_LEVEL: envalid.str({
       default: 'info',
       choices: ['error', 'info', 'verbose', 'debug'],
@@ -30,6 +27,8 @@ const settings = ({ setConfig, getConfig }) => {
     HASURA_GRAPHQL_ADMIN_SECRET: envalid.str(),
     HASURA_BOOT_MAX_ATTEMPTS: envalid.num({ default: 10 }),
     HASURA_BOOT_DELAY: envalid.num({ default: 2500 }),
+
+    RUN_MIGRATIONS: envalid.bool({ default: false }),
   });
 
   // Add validated environment to the app's configuration
@@ -56,8 +55,7 @@ const settings = ({ setConfig, getConfig }) => {
   });
 
   // Setup Migrations
-  // TODO: should depend upon an environment
-  setConfig('migrations.isEnable', true);
+  setConfig('migrations.isEnable', env.RUN_MIGRATIONS === true);
 
   // Generic app configuration
   setConfig('app.name', 'Clickpin API');

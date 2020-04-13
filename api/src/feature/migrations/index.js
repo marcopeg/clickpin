@@ -1,6 +1,18 @@
 const path = require('path');
 const { FEATURE_NAME, ...hooks } = require('./hooks');
-const { getLastMigration } = require('./get-last-migration');
+
+const getLastMigration = async hasura => {
+  try {
+    const lastMigration = await hasura.query({
+      sql: 'SELECT * FROM app_settings WHERE key = $key',
+      binds: { key: 'hasura.migrations.current' },
+    });
+
+    return lastMigration.length ? Number(lastMigration[0].value) : -1;
+  } catch (err) {
+    return -1;
+  }
+};
 
 const migrationsActionHandler = async ({ hasura }, { getConfig }) => {
   // Opt-in migrations from the App's configuration
