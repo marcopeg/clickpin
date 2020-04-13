@@ -8,7 +8,7 @@
     "___// Development Utilities //___": "",
     "start": "node src/index.js",
     "start:dev": "nodemon --watch src src/index.js",
-    "start:gitpod": "NODE_ENV=development nodemon --watch src src/index.js",
+    "start:gitpod": "NODE_ENV=development NODE_ROLE=master nodemon --watch src src/index.js",
     "start:docker": "yarn && nodemon src/index.js",
     "___// Testing Utilities //___": "",
     "test": "npm run test:unit",
@@ -25,7 +25,8 @@
     "cross-fetch": "^3.0.4",
     "envalid": "^6.0.1",
     "fastify": "2.11.0",
-    "fastify-plugin": "^1.6.1"
+    "fastify-plugin": "^1.6.1",
+    "hasura-sdk": "^0.1.3"
   },
   "devDependencies": {
     "axios": "^0.19.2",

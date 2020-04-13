@@ -17,5 +17,6 @@ const pingActionHandler = ({ registerRoute }) => registerRoute(pingRoute);
 module.exports = {
   hook: '$FASTIFY_ROUTE',
   name: FEATURE_NAME,
+  trace: __filename,
   handler: pingActionHandler,
 };

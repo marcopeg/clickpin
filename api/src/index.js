@@ -5,6 +5,7 @@ const { runHookApp } = require('@forrestjs/hooks');
  */
 const serviceFastify = require('./service/service-fastify');
 const serviceFastifyGql = require('./service/service-fastify-gql');
+const serviceHasura = require('./service/service-hasura');
 const serviceTdd = require('./service/service-tdd');
 
 /**
@@ -13,6 +14,7 @@ const serviceTdd = require('./service/service-tdd');
 const { settings } = require('./settings');
 const featurePingRest = require('./feature/ping-rest');
 const featurePingGql = require('./feature/ping-gql');
+const featureMigrations = require('./feature/migrations');
 
 /**
  * Feature Flags
@@ -21,8 +23,8 @@ const featurePingGql = require('./feature/ping-gql');
 runHookApp({
   settings,
   trace: 'compact',
-  services: [serviceFastify, serviceFastifyGql, serviceTdd],
-  features: [featurePingRest, featurePingGql],
+  services: [serviceFastify, serviceFastifyGql, serviceHasura, serviceTdd],
+  features: [featureMigrations, featurePingRest, featurePingGql],
 }).catch(err => console.error(err.message));
 
 // Let Docker exit on Ctrl+C

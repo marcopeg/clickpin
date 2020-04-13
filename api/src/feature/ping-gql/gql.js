@@ -29,5 +29,6 @@ const pingActionHandler = () => {
 module.exports = {
   hook: '$FASTIFY_GQL_EXTEND_SCHEMA',
   name: FEATURE_NAME,
+  trace: __filename,
   handler: pingActionHandler,
 };
