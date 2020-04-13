@@ -16,6 +16,8 @@ export const Auth0Provider = ({
     isLoading: true,
     isReady: false,
     error: null,
+    user: null,
+    token: null,
   });
   const clientRef = useRef(null);
 
@@ -23,7 +25,9 @@ export const Auth0Provider = ({
   useEffect(() => {
     (async () => {
       let isAuthenticated = false;
-      let error = null;      
+      let error = null;
+      let user = null;
+      let token = null;
       try {
         // Init client and check for current authentication status
         clientRef.current = await createAuth0Client(initOptions);
@@ -35,6 +39,17 @@ export const Auth0Provider = ({
           isAuthenticated = await clientRef.current.isAuthenticated(false);
           history.push(appState && appState.returnTo ? appState.returnTo : '/');
         }
+
+        // Tries to recover user's informations and token
+        if (isAuthenticated) {
+          const info = await Promise.all([
+            clientRef.current.getUser(),
+            clientRef.current.getTokenSilently(),
+          ]);
+
+          user = info[0];
+          token = info[1];
+        }
       } catch (err) {
         error = err.message;
       }
@@ -44,6 +59,8 @@ export const Auth0Provider = ({
         isLoading: false,
         isReady: true,
         error,
+        user,
+        token,
       });
     })();
   }, []); // eslint-disable-line

@@ -19,6 +19,14 @@ const HomeView = () => {
       Home view
       <br />
       {btn}
+      <hr />
+      {auth.isAuthenticated && (
+        <div>
+          <h2>{auth.user.name}</h2>
+          <img src={auth.user.picture} />
+          {console.log(auth.user)}
+        </div>
+      )}
     </div>
   );
 };
