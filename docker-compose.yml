@@ -1,0 +1,82 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+      - ${HUMBLE_DATA}/prod/pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - internal
+
+  hasura:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.wallie-hasura-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.wallie-hasura-redirect.redirectscheme.permanent=true"
+
+      - "traefik.http.services.wallie-hasura-web.loadbalancer.server.port=8080"
+      - "traefik.http.routers.wallie-hasura-web.rule=Host(`${HASURA_HOST}`)"
+      - "traefik.http.routers.wallie-hasura-web.entrypoints=web"
+      - "traefik.http.routers.wallie-hasura-web.middlewares=wallie-hasura-redirect"
+
+      - "traefik.http.routers.wallie-hasura-secure.rule=Host(`${HASURA_HOST}`)"
+      - "traefik.http.routers.wallie-hasura-secure.entrypoints=websecure"
+      - "traefik.http.routers.wallie-hasura-secure.tls=true"
+      - "traefik.http.routers.wallie-hasura-secure.tls.certresolver=myresolver"
+    image: hasura/graphql-engine:v1.1.1
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
+    networks:
+      - web
+      - internal
+
+  api:
+    build: ./api
+    environment:
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_API_ENDPOINT: "http://hasura:8080"
+      RUN_MIGRATIONS: "true"
+    depends_on:
+      - "hasura"
+    networks:
+      - internal
+      
+  app:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.wallie-app-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.wallie-app-redirect.redirectscheme.permanent=true"
+
+      - "traefik.http.services.wallie-app-web.loadbalancer.server.port=80"
+      - "traefik.http.routers.wallie-app-web.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.wallie-app-web.entrypoints=web"
+      - "traefik.http.routers.wallie-app-web.middlewares=wallie-app-redirect"
+
+      - "traefik.http.routers.wallie-app-secure.rule=Host(`${APP_HOST}`)"
+      - "traefik.http.routers.wallie-app-secure.entrypoints=websecure"
+      - "traefik.http.routers.wallie-app-secure.tls=true"
+      - "traefik.http.routers.wallie-app-secure.tls.certresolver=myresolver"
+    build:
+      context: ./app
+      args:
+        REACT_APP_HASURA_ENDPOINT: https://${HASURA_HOST}
+        REACT_APP_AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+        REACT_APP_AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
+    networks:
+      - web
+      - internal
+
+networks:
+  web:
+    external: true
+    name: web
+  internal:
