@@ -17,11 +17,11 @@ services:
       - "traefik.http.middlewares.wallie-hasura-redirect.redirectscheme.permanent=true"
 
       - "traefik.http.services.wallie-hasura-web.loadbalancer.server.port=8080"
-      - "traefik.http.routers.wallie-hasura-web.rule=Host(`hasura.wallie.dev.marcopeg.com`)"
+      - "traefik.http.routers.wallie-hasura-web.rule=Host(`${HASURA_HOST}`)"
       - "traefik.http.routers.wallie-hasura-web.entrypoints=web"
       - "traefik.http.routers.wallie-hasura-web.middlewares=wallie-hasura-redirect"
 
-      - "traefik.http.routers.wallie-hasura-secure.rule=Host(`hasura.wallie.dev.marcopeg.com`)"
+      - "traefik.http.routers.wallie-hasura-secure.rule=Host(`${HASURA_HOST}`)"
       - "traefik.http.routers.wallie-hasura-secure.entrypoints=websecure"
       - "traefik.http.routers.wallie-hasura-secure.tls=true"
       - "traefik.http.routers.wallie-hasura-secure.tls.certresolver=myresolver"
@@ -43,12 +43,20 @@ services:
     environment:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_API_ENDPOINT: "http://hasura:8080"
+      RUN_MIGRATIONS: "true"
     depends_on:
       - "hasura"
     networks:
       - web
       - internal
       
+  app:
+    build:
+      context: ./app
+      args:
+        REACT_APP_HASURA_ENDPOINT: https://${HASURA_HOST}
+        REACT_APP_AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+        REACT_APP_AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
 
 networks:
   web:
