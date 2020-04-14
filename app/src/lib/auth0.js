@@ -1,10 +1,51 @@
 import React, { useEffect, useRef, useState } from 'react';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import history from '../history';
+import env from '../environment';
 
 export const Auth0Context = React.createContext();
 
-export const Auth0Provider = ({
+const Auth0ProviderDev = ({ children }) => {
+  // Attempt to parse the
+  const { userId, userRole, userData, adminSecret } = (() => {
+    try {
+      return JSON.parse(env.AUTH0_CLIENT_ID);
+    } catch (err) {
+      console.error(err);
+      throw new Error('Could not parse: process.env.AUTH0_CLIENT_ID');
+    }
+  })();
+
+  return (
+    <Auth0Context.Provider
+      value={{
+        // states
+        isReady: true,
+        isLoading: false,
+        isAuthenticated: true,
+
+        // data
+        user: userData || {
+          username: 'John Doe',
+          email: 'jdoe@foobar.com',
+        },
+        token: {
+          'x-hasura-admin-secret': adminSecret,
+          'x-hasura-role': userRole,
+          'x-hasura-user-id': userId,
+        },
+
+        // api
+        login: () => {},
+        logout: () => {},
+      }}
+    >
+      {children}
+    </Auth0Context.Provider>
+  );
+};
+
+const Auth0ProviderProd = ({
   children,
   rootURL = window.location.origin,
   rootURI = window.location.pathname,
@@ -90,3 +131,6 @@ export const Auth0Provider = ({
     <Auth0Context.Provider value={value}>{children}</Auth0Context.Provider>
   );
 };
+
+export const Auth0Provider =
+  env.AUTH0_DOMAIN === '@dev' ? Auth0ProviderDev : Auth0ProviderProd;
