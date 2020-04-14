@@ -20,7 +20,7 @@ const ACCOUNTS_POPULATE = `
   INSERT INTO public.accounts 
   (id, email, auth0_id)
   VALUES
-  (1, 'dev@wallie.com', 'dev::dev')
+  (1, 'dev@wallie.com', 'dev@dev')
 `;
 
 const down = async hasura => {
@@ -64,7 +64,10 @@ const up = async hasura => {
     },
   });
 
-  await hasura.query(ACCOUNTS_POPULATE, null, { throw: false, log: 'build' });
+  // Populate the default development user
+  if (process.env.NODE_ENV === 'development') {
+    await hasura.query(ACCOUNTS_POPULATE, null, { throw: false, log: 'build' });
+  }
 };
 
 module.exports = {

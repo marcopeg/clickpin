@@ -16,7 +16,7 @@ const getLastMigration = async hasura => {
 
 const migrationsActionHandler = async ({ hasura }, { getConfig }) => {
   // Opt-in migrations from the App's configuration
-  if (!getConfig('migrations.isEnable')) return;
+  if (!getConfig('migrations.isEnabled')) return;
 
   console.info('Running migrations...');
   const source = path.join(__dirname, 'migrations');

@@ -7,12 +7,12 @@ const env = {
   REACT_APP_AUTH0_AUDIENCE: process.env.REACT_APP_AUTH0_AUDIENCE,
 };
 
-// Setup fake Hasura credentials ind development
+// Setup fake Hasura credentials for development
 if (env.NODE_ENV === 'development' && !env.REACT_APP_AUTH0_DOMAIN) {
+  const adminSecret = process.env.REACT_APP_HASURA_SECRET || 'hasura';
+  const defaultUser = `{"userId": "1", "userRole":"user", "adminSecret":"${adminSecret}"}`;
   env.REACT_APP_AUTH0_DOMAIN = '@dev';
-  env.REACT_APP_AUTH0_CLIENT_ID =
-    env.REACT_APP_AUTH0_CLIENT_ID ||
-    '{"userId": "1", "userRole":"user", "adminSecret":"hasura"}';
+  env.REACT_APP_AUTH0_CLIENT_ID = env.REACT_APP_AUTH0_CLIENT_ID || defaultUser;
 }
 
 const requiredKeys = [

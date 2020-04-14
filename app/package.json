@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:gitpod:app": "REACT_APP_HASURA_ENDPOINT=$(gp url 8080) react-scripts start",
+    "start:gitpod:app": "REACT_APP_HASURA_ENDPOINT=$(gp url 8080) REACT_APP_HASURA_SECRET=${HASURA_GRAPHQL_ADMIN_SECRET} react-scripts start",
     "start:gitpod:styleguide": "HOST=$(gp url 6060) styleguidist server",
     "build": "react-scripts build",
     "test": "react-scripts test",

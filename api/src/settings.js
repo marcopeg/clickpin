@@ -55,7 +55,7 @@ const settings = ({ setConfig, getConfig }) => {
   });
 
   // Setup Migrations
-  setConfig('migrations.isEnable', env.RUN_MIGRATIONS === true);
+  setConfig('migrations.isEnabled', env.RUN_MIGRATIONS === true);
 
   // Generic app configuration
   setConfig('app.name', 'Clickpin API');
