@@ -4,8 +4,10 @@ import { CssBaseline } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Router } from 'react-router-dom';
 
+import env from './environment';
 import history from './history';
-import { Auth0Provider } from './state/auth0';
+import { Auth0Provider } from './lib/auth0';
+import { ApolloProvider } from './lib/ApolloProvider';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -15,17 +17,19 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Auth0Provider
-        domain={process.env.REACT_APP_AUTH0_DOMAIN}
-        client_id={process.env.REACT_APP_AUTH0_CLIENT_ID}
-        audience={process.env.REACT_APP_AUTH0_AUDIENCE}
+        domain={env.AUTH0_DOMAIN}
+        client_id={env.AUTH0_CLIENT_ID}
+        audience={env.AUTH0_AUDIENCE}
         redirect_uri={window.location.origin}
       >
-        <React.Fragment>
-          <CssBaseline />
-          <Router history={history}>
-            <App />
-          </Router>
-        </React.Fragment>
+        <ApolloProvider endpoint={env.HASURA_ENDPOINT}>
+          <React.Fragment>
+            <CssBaseline />
+            <Router history={history}>
+              <App />
+            </Router>
+          </React.Fragment>
+        </ApolloProvider>
       </Auth0Provider>
     </ThemeProvider>
   </React.StrictMode>,

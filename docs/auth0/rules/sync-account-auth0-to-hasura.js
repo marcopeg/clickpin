@@ -61,7 +61,7 @@ function (user, context, callback) {
       context.accessToken['https://hasura.io/jwt/claims'] = {
         "x-hasura-default-role": "user",
         "x-hasura-allowed-roles": ["user"],
-        "x-hasura-user-id": userId,
+        "x-hasura-user-id": String(userId),
         // "x-auth0-user-id": user.user_id,
       };
 

@@ -51,6 +51,7 @@ const up = async hasura => {
     table: 'accounts',
     permission: {
       columns: [
+        'id',
         'uuid',
         'email',
         'is_active',
@@ -58,9 +59,8 @@ const up = async hasura => {
         'data',
         'created_at',
         'updated_at',
-        'last_login_at',
       ],
-      filter: { uuid: { _eq: 'X-Hasura-User-Id' } },
+      filter: { id: { _eq: 'X-Hasura-User-Id' } },
     },
   });
 

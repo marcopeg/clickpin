@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import history from '../history';
 
 export const Auth0Context = React.createContext();
-export const useAuth0 = () => useContext(Auth0Context);
 
 export const Auth0Provider = ({
   children,

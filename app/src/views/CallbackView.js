@@ -1,8 +1,9 @@
 import React from 'react';
-import { useAuth0 } from '../state/auth0';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../state/use-auth';
 
 const CallbackView = () => {
-  const auth = useAuth0();
+  const auth = useAuth();
 
   if (!auth.isReady) {
     return 'Awaiting auth...';
@@ -19,6 +20,8 @@ const CallbackView = () => {
       CallbackView
       <br />
       {btn}
+      <hr />
+      <Link to="/">Home</Link>
     </div>
   );
 };

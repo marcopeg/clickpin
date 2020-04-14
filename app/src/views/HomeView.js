@@ -1,8 +1,10 @@
 import React from 'react';
-import { useAuth0 } from '../state/auth0';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../state/use-auth';
+import Username from '../containers/Username';
 
 const HomeView = () => {
-  const auth = useAuth0();
+  const auth = useAuth();
 
   if (!auth.isReady) {
     return 'Awaiting auth...';
@@ -23,10 +25,13 @@ const HomeView = () => {
       {auth.isAuthenticated && (
         <div>
           <h2>{auth.user.name}</h2>
-          <img src={auth.user.picture} />
+          <img src={auth.user.picture} alt={auth.user.name} />
           {console.log(auth.user)}
+          <Username />
         </div>
       )}
+      <hr />
+      <Link to="/auth/callback">Go to callback</Link>
     </div>
   );
 };
