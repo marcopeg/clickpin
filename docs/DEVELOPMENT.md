@@ -87,7 +87,9 @@ The main service runs a _Create React App_ instance on `port 3000`.
 
 > The process and logs are executed in the bottom area of the workdpace (Cmd + j)
 
-When you first run the
+When you first run the Workspace, the APP runs with a development test user which
+is seeded at initialization time. In order to change this, please go to
+[Auth0 Setup Tutorial](./auth0/)
 
 ### Tests & Styleguide
 
