@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:12
+    restart: always
+    volumes:
+      - ${HUMBLE_DATA}/prod/pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - internal
+
+  hasura:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.wallie-hasura-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.wallie-hasura-redirect.redirectscheme.permanent=true"
+
+      - "traefik.http.services.wallie-hasura-web.loadbalancer.server.port=8080"
+      - "traefik.http.routers.wallie-hasura-web.rule=Host(`hasura.wallie.dev.marcopeg.com`)"
+      - "traefik.http.routers.wallie-hasura-web.entrypoints=web"
+      - "traefik.http.routers.wallie-hasura-web.middlewares=wallie-hasura-redirect"
+
+      - "traefik.http.routers.wallie-hasura-secure.rule=Host(`hasura.wallie.dev.marcopeg.com`)"
+      - "traefik.http.routers.wallie-hasura-secure.entrypoints=websecure"
+      - "traefik.http.routers.wallie-hasura-secure.tls=true"
+      - "traefik.http.routers.wallie-hasura-secure.tls.certresolver=myresolver"
+    image: hasura/graphql-engine:v1.1.1
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+    networks:
+      - web
+      - internal
+
+  api:
+    build: ./api
+    environment:
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_API_ENDPOINT: "http://hasura:8080"
+    depends_on:
+      - "hasura"
+    networks:
+      - web
+      - internal
+      
+
+networks:
+  web:
+    external: true
+    name: web
+  internal:
