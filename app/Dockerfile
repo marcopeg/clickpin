@@ -1,3 +1,5 @@
+
+
 #
 # Build Production Artifacts
 # ==========================================
@@ -18,6 +20,15 @@
 
 FROM node:13.10-alpine AS builder
 
+ARG REACT_APP_HASURA_ENDPOINT
+ENV REACT_APP_HASURA_ENDPOINT=$REACT_APP_HASURA_ENDPOINT
+
+ARG REACT_APP_AUTH0_DOMAIN
+ENV REACT_APP_AUTH0_DOMAIN=$REACT_APP_AUTH0_DOMAIN
+
+ARG REACT_APP_AUTH0_CLIENT_ID
+ENV REACT_APP_AUTH0_CLIENT_ID=$REACT_APP_AUTH0_CLIENT_ID
+
 # NPM Install for building
 WORKDIR /usr/src/app-build
 ADD package.json /usr/src/app-build
@@ -33,9 +44,6 @@ ADD public /usr/src/app-build/public
 WORKDIR /usr/src/app-build
 RUN npm run build
 
-# Remove dev dependencies
-# RUN npm prune --production
-
 
 #
 # Runner Image
@@ -47,11 +55,10 @@ RUN npm run build
 # The idea is to keep this image as small as possible.
 #
 
-# FROM nginx:1.17.9 AS runner
+FROM nginx:1.17.9 AS runner
 
 # Copy project specific assets:
-# WORKDIR /usr/share/nginx/
-# COPY --from=builder /usr/src/app-build/build ./html
+COPY --from=builder /usr/src/app-build/build /usr/share/nginx/html
 
 # # Default environment configuration:
 # EXPOSE 80
