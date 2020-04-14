@@ -25,13 +25,13 @@ ADD package-lock.json /usr/src/app-build
 RUN npm install
 
 # Copy source files:
-# WORKDIR /usr/src/app-build
-# ADD src /usr/src/app-build/src
-# ADD public /usr/src/app-build/public
+WORKDIR /usr/src/app-build
+ADD src /usr/src/app-build/src
+ADD public /usr/src/app-build/public
 
 # Build:
-# WORKDIR /usr/src/app-build
-# RUN npm run build
+WORKDIR /usr/src/app-build
+RUN npm run build
 
 # Remove dev dependencies
 # RUN npm prune --production
