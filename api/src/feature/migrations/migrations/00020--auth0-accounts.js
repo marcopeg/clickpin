@@ -24,7 +24,7 @@ const ACCOUNTS_POPULATE = `
 `;
 
 const down = async hasura => {
-  console.log('DOWN ----------------------------------->');
+  // console.log('DOWN ----------------------------------->');
   await hasura.untrackTable({
     schema: 'public',
     name: 'accounts',
@@ -37,7 +37,7 @@ const down = async hasura => {
 
 const up = async hasura => {
   await down(hasura);
-  console.log('  UP ----------------------------------->');
+  // console.log('  UP ----------------------------------->');
   await hasura.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   await hasura.query(ACCOUNTS_CREATE, null, { throw: false, log: 'build' });
 
@@ -71,7 +71,7 @@ const up = async hasura => {
 };
 
 module.exports = {
-  stable: false,
+  stable: true,
   up,
   down,
 };
