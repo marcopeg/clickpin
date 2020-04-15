@@ -26,3 +26,6 @@ RUN mkdir -p ~/.hasura/bin \
 ENV HASURA_GRAPHQL_DATABASE_URL="postgres://localhost:5432/postgres"
 ENV HASURA_GRAPHQL_ENABLE_CONSOLE="true"
 ENV HASURA_GRAPHQL_ADMIN_SECRET="hasura"
+
+# Add the default link to the backend ingest webhook
+ENV HASURA_INGEST_WEBHOOK="http://localhost:8080/webhooks/hasura"
