@@ -2,15 +2,14 @@ const { FEATURE_NAME } = require('./hooks');
 
 module.exports = ({ registerAction }) => {
   registerAction({
-    hook: '$REGISTER_WEBHOOK',
+    hook: '$ON_HASURA_WEBHOOK',
     name: FEATURE_NAME,
     trace: __filename,
     handler: () => ({
-      name: 'hasura',
+      match: request => request.body.trigger.name === 'on_create_url',
       handler: (request, reply) => {
-        console.log('HANDLE HASURA WEBHOOK');
-        console.log(request.body);
-        reply.send('+ok');
+        console.log('handle urls webhoos');
+        reply.send('foo');
       },
     }),
   });

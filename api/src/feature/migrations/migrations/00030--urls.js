@@ -16,12 +16,15 @@ const URLS_DROP = `
 `;
 
 const down = async hasura => {
+  // Remove urls table
   await hasura.untrackTable({
     schema: 'public',
     name: 'urls',
     cascade: true,
   });
   await hasura.query(URLS_DROP, null, { throw: false, log: 'dismantle' });
+
+  // Remove triggers
   await hasura.call({
     type: 'delete_event_trigger',
     args: {
@@ -33,12 +36,14 @@ const down = async hasura => {
 const up = async hasura => {
   await down(hasura);
 
+  // Build urls table & track
   await hasura.query(URLS_CREATE, null, { throw: false, log: 'build' });
   await hasura.trackTable({
     schema: 'public',
     name: 'urls',
   });
 
+  // Setup permissions
   await hasura.call({
     type: 'create_insert_permission',
     args: {
@@ -55,7 +60,6 @@ const up = async hasura => {
       },
     },
   });
-
   await hasura.call({
     type: 'create_select_permission',
     args: {
@@ -73,6 +77,7 @@ const up = async hasura => {
     },
   });
 
+  // Add event triggers
   await hasura.call({
     type: 'create_event_trigger',
     args: {
@@ -81,7 +86,7 @@ const up = async hasura => {
         schema: 'public',
         name: 'urls',
       },
-      webhook: 'http://localhost:8080/webhooks/hasura',
+      webhook_from_env: 'HASURA_INGEST_WEBHOOK',
       insert: {
         columns: '*',
         payload: '*',

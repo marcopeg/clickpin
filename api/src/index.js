@@ -16,6 +16,7 @@ const { settings } = require('./settings');
 const featurePingRest = require('./feature/ping-rest');
 const featurePingGql = require('./feature/ping-gql');
 const featureMigrations = require('./feature/migrations');
+const featureWebhooks = require('./feature/webhooks');
 const featureUrlInfo = require('./feature/url-info');
 
 /**
@@ -36,6 +37,7 @@ runHookApp({
     featureMigrations,
     featurePingRest,
     featurePingGql,
+    featureWebhooks,
     featureUrlInfo,
   ],
 }).catch(err => console.error(err.message));

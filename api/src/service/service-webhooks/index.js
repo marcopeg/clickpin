@@ -15,7 +15,11 @@ module.exports = ({ registerAction, registerHook, createHook }) => {
       const registered = [];
 
       // Register the webhooks that have been extended
-      webhooks.forEach(([{ name, handler }]) => {
+      webhooks.forEach(([webhook]) => {
+        // TODO: ajv the webhook data structure
+
+        const { name, method = 'POST', ...routeConfig } = webhook;
+
         if (registered.includes(name)) {
           throw new Error(`[webhooks] attempt to duplicate: "${name}"`);
         }
@@ -24,9 +28,9 @@ module.exports = ({ registerAction, registerHook, createHook }) => {
         //       least a basic password or a token, let the
         //       extension to provide a custom pre-handler
         registerRoute({
-          method: 'GET',
           url: `/${root}/${name}`,
-          handler,
+          method,
+          ...routeConfig,
         });
 
         registered.push(name);
