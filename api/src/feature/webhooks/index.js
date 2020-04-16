@@ -29,7 +29,7 @@ module.exports = ({ registerAction, registerHook, createHook }) => {
         }
 
         try {
-          return target.handler();
+          return target.handler(request, reply);
         } catch (err) {
           console.error(err);
           reply.code(404).send('Missbehaving handler');
