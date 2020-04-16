@@ -25,6 +25,7 @@ const down = async hasura => {
 };
 
 const up = async hasura => {
+  await down(hasura);
   await hasura.query(SETTINGS_CREATE, null, { throw: false, log: 'build' });
 
   await hasura.trackTable({
