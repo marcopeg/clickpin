@@ -21,6 +21,7 @@
     "@forrestjs/hooks": "3.9.0",
     "@marcopeg/deeplog": "^1.13.0",
     "apollo-boost": "^0.4.7",
+    "apollo-link-context": "^1.0.20",
     "apollo-server-fastify": "^2.12.0",
     "cross-fetch": "^3.0.4",
     "envalid": "^6.0.1",

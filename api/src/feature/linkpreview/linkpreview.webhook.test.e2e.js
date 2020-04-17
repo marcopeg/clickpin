@@ -1,7 +1,17 @@
 const axios = require('axios');
 
-describe('url-info/webhook', () => {
+describe('linkpreview/webhook', () => {
   const { TEST_SERVER_ROOT } = global.env;
+  let originalApiKey = null;
+
+  // Force a development api key for linkpreview so to avoid
+  // to exaust the rate limit
+  beforeAll(async () => {
+    originalApiKey = await global.app.getConfig('linkpreview.api.key');
+    await global.app.setConfig('linkpreview.api.key', '@dev');
+  });
+
+  afterAll(() => global.app.setConfig('linkpreview.api.key', originalApiKey));
 
   it('should match the hasura payload for an insert into the urls table', async () => {
     const r1 = await axios.post(`${TEST_SERVER_ROOT}/webhooks/hasura`, {
@@ -16,7 +26,7 @@ describe('url-info/webhook', () => {
           new: {
             cover: null,
             data: {},
-            url: 'http://google.it',
+            url: 'http://google.com',
             updated_at: '2020-04-16T06:52:33.148316+00:00',
             created_at: '2020-04-16T06:52:33.148316+00:00',
             id: 1,
@@ -41,6 +51,6 @@ describe('url-info/webhook', () => {
     });
 
     expect(r1.status).toBe(200);
-    expect(r1.data).toBe('foo');
+    expect(r1.data).toBe('affected_rows: 1');
   });
 });

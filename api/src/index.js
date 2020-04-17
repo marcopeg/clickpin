@@ -17,7 +17,7 @@ const featurePingRest = require('./feature/ping-rest');
 const featurePingGql = require('./feature/ping-gql');
 const featureMigrations = require('./feature/migrations');
 const featureWebhooks = require('./feature/webhooks');
-const featureUrlInfo = require('./feature/url-info');
+const featureLinkpreview = require('./feature/linkpreview');
 
 /**
  * Feature Flags
@@ -38,7 +38,7 @@ runHookApp({
     featurePingRest,
     featurePingGql,
     featureWebhooks,
-    featureUrlInfo,
+    featureLinkpreview,
   ],
 }).catch(err => console.error(err.message));
 

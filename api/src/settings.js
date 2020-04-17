@@ -28,7 +28,9 @@ const settings = ({ setConfig, getConfig }) => {
     HASURA_BOOT_MAX_ATTEMPTS: envalid.num({ default: 10 }),
     HASURA_BOOT_DELAY: envalid.num({ default: 2500 }),
 
+    // Misc
     RUN_MIGRATIONS: envalid.bool({ default: false }),
+    LINKPREVIEW_API_KEY: envalid.str(),
   });
 
   // Add validated environment to the app's configuration
@@ -58,7 +60,8 @@ const settings = ({ setConfig, getConfig }) => {
   setConfig('migrations.isEnabled', env.RUN_MIGRATIONS === true);
 
   // Generic app configuration
-  setConfig('app.name', 'Clickpin API');
+  setConfig('app.name', 'Wallie API');
+  setConfig('linkpreview.api.key', env.LINKPREVIEW_API_KEY);
 };
 
 module.exports = { settings };

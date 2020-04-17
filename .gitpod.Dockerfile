@@ -29,3 +29,6 @@ ENV HASURA_GRAPHQL_ADMIN_SECRET="hasura"
 
 # Add the default link to the backend ingest webhook
 ENV HASURA_INGEST_WEBHOOK="http://localhost:8081/webhooks/hasura"
+
+# Add the development version of the linkpreview api
+ENV LINKPREVIEW_API_KEY="@dev"

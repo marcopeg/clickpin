@@ -1,15 +1,18 @@
 const hasura = require('hasura-sdk');
 const { SERVICE_NAME, ...hooks } = require('./hooks');
+const { createClient } = require('./apollo');
 
 const pause = (delay = 0) => new Promise(r => setTimeout(r, delay));
 
 const initActionHandler = ({ getConfig, setContext }) => {
+  const { rootUrl, adminSecret } = getConfig('hasura');
   hasura.init({
-    endpoint: `${getConfig('hasura.rootUrl')}/v1/query`,
-    adminSecret: getConfig('hasura.adminSecret'),
+    endpoint: `${rootUrl}/v1/query`,
+    adminSecret,
   });
 
-  setContext('hasura.client', hasura);
+  setContext('hasura.sdk.client', hasura);
+  setContext('hasura.apollo.client', createClient({ rootUrl, adminSecret }));
 };
 
 const startActionHandler = async ({ getConfig, createHook }) => {

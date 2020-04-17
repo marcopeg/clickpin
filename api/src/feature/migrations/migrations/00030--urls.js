@@ -1,13 +1,13 @@
 const URLS_CREATE = `
   CREATE TABLE public.urls (
-    id BIGSERIAL PRIMARY KEY,
-    url TEXT NOT NULL UNIQUE,
+    url VARCHAR(255) PRIMARY KEY,
+    id BIGSERIAL,
     cover TEXT,
     title TEXT,
     description TEXT,
     data JSONB default '{}',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+    updated_at TIMESTAMP WITH TIME ZONE
   );
 `;
 
@@ -96,7 +96,7 @@ const up = async hasura => {
 };
 
 module.exports = {
-  stable: false,
+  stable: true,
   up,
   down,
 };
